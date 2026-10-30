@@ -31,7 +31,7 @@
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            position: relative; /* Needed for the movement */
+            position: relative; 
             transition: all 0.1s ease;
         }
         h1 { color: #333; }
@@ -51,17 +51,17 @@
         function moveButton() {
             const btn = document.getElementById('scary-button');
             
-            // Generate random positions within the screen
+           
             const x = Math.random() * (window.innerWidth - btn.clientWidth);
             const y = Math.random() * (window.innerHeight - btn.clientHeight);
             
-            // Move the button to the new random spot
+            
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
         }
 
-        // If they actually manage to click it (or use the keyboard)
+        
         document.getElementById('scary-button').onclick = function() {
             alert("🤡 APRIL FOOLS! \n\nNo iPhone here, just some practice code! Better luck next year!");
         };
