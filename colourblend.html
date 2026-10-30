@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<div id="display" style="width: 100px; height: 100px; border: 1px solid #000;"></div>
+
+<label>Red: <input type="range" id="r" min="0" max="255" oninput="mix()"></label><br>
+<label>Green: <input type="range" id="g" min="0" max="255" oninput="mix()"></label><br>
+<label>Blue: <input type="range" id="b" min="0" max="255" oninput="mix()"></label><br>
+
+<p id="code">rgb(127, 127, 127)</p>
+
+<script>
+function mix() {
+  const r = document.getElementById('r').value;
+  const g = document.getElementById('g').value;
+  const b = document.getElementById('b').value;
+  const color = `rgb(${r}, ${g}, ${b})`;
+  
+  document.getElementById('display').style.backgroundColor = color;
+  document.getElementById('code').innerText = color;
+}
+</script>
+<body>
+    
+</body>
+</html>

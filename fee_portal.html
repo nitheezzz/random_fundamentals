@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fees Registration and Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fc;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: rgb(164, 159, 159);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #051c5c;
+        }
+
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn-group {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .add-btn {
+            background: #2563eb;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .clear-btn {
+            background: #dc2626;
+        }
+
+        .clear-btn:hover {
+            background: #b91c1c;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table th {
+            background: #1e40af;
+            color: white;
+            padding: 12px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .edit-btn {
+            background: #16a34a;
+            padding: 8px 12px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            padding: 8px 12px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-btn:hover {
+            background: #15803d;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .total-box {
+            margin-top: 20px;
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0c4a6e;
+            text-align: right;
+        }
+
+        @media(max-width:768px) {
+            table {
+                font-size: 13px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Student Fees Registration and Management System (INR ₹)</h1>
+
+        <div class="form-section">
+
+            <input type="text" id="studentName" placeholder="Student Name">
+
+            <input type="text" id="rollNumber" placeholder="Roll Number">
+
+            <input type="text" id="course" placeholder="Course">
+
+            <input type="number" id="fees" placeholder="Fees Amount ₹">
+
+            <select id="status">
+                <option value="Paid">Paid</option>
+                <option value="Pending">Pending</option>
+            </select>
+
+        </div>
+
+        <div class="btn-group">
+            <button class="add-btn" onclick="addStudent()">Add Record</button>
+            <button class="clear-btn" onclick="clearForm()">Clear</button>
+        </div>
+
+        <table id="studentTable">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Roll Number</th>
+                    <th>Course</th>
+                    <th>Fees (₹)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            </tbody>
+
+        </table>
+
+        <div class="total-box">
+            Total Fees Collected: ₹ <span id="totalFees">0</span>
+        </div>
+
+    </div>
+    <script>
+
+        let serialNumber = 1;
+        let totalFees = 0;
+
+        function addStudent() {
+
+            let name = document.getElementById("studentName").value;
+            let roll = document.getElementById("rollNumber").value;
+            let course = document.getElementById("course").value;
+            let fees = document.getElementById("fees").value;
+            let status = document.getElementById("status").value;
+
+            if (name === "" || roll === "" || course === "" || fees === "") {
+                alert("Please fill all fields");
+                return;
+            }
+
+            let table = document.getElementById("studentTable").getElementsByTagName('tbody')[0];
+
+            let newRow = table.insertRow();
+
+            newRow.innerHTML = `
+            <td>${serialNumber}</td>
+            <td>${name}</td>
+            <td>${roll}</td>
+            <td>${course}</td>
+            <td>₹ ${fees}</td>
+            <td>${status}</td>
+            <td>
+                <button class="edit-btn" onclick="editRow(this)">Edit</button>
+                <button class="delete-btn" onclick="deleteRow(this, ${fees})">Delete</button>
+            </td>
+        `;
+
+            serialNumber++;
+
+            totalFees += Number(fees);
+            document.getElementById("totalFees").innerText = totalFees;
+
+            clearForm();
+        }
+
+        function clearForm() {
+
+            document.getElementById("studentName").value = "";
+            document.getElementById("rollNumber").value = "";
+            document.getElementById("course").value = "";
+            document.getElementById("fees").value = "";
+            document.getElementById("status").value = "Paid";
+        }
+
+        function deleteRow(button, fees) {
+
+            let row = button.parentElement.parentElement;
+
+            row.remove();
+
+            totalFees -= Number(fees);
+
+            document.getElementById("totalFees").innerText = totalFees;
+        }
+
+        function editRow(button) {
+
+            let row = button.parentElement.parentElement;
+
+            let cells = row.getElementsByTagName("td");
+
+            document.getElementById("studentName").value = cells[1].innerText;
+            document.getElementById("rollNumber").value = cells[2].innerText;
+            document.getElementById("course").value = cells[3].innerText;
+
+            let feeText = cells[4].innerText.replace("₹", "").trim();
+            document.getElementById("fees").value = feeText;
+
+            document.getElementById("status").value = cells[5].innerText;
+
+            totalFees -= Number(feeText);
+            document.getElementById("totalFees").innerText = totalFees;
+
+            row.remove();
+        }
+
+    </script>
+
+</body>
+
+</html>
